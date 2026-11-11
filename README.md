@@ -8,14 +8,12 @@ Application de chronométrage collectif pour conférences d'apnée.
 cp .env.example .env
 docker compose up -d --build
 ```
+Application participant : `/`
 
-Application participant :
+Interface administrateur : `/admin`
 
-- https://apnee.fredlemerou.fr/
-
-Interface animateur :
-
-- https://apnee.fredlemerou.fr/admin
+L'application peut être hébergée sur votre propre
+serveur avec Docker.
 
 ## Mise à jour
 
@@ -39,7 +37,7 @@ La base SQLite est stockée dans :
 
 ## Accès administrateur
 
-Interface : https://apnee.fredlemerou.fr/admin
+Interface : /admin
 
 Mot de passe par défaut : `Apnée`
 

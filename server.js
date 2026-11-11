@@ -11,7 +11,7 @@ const QRCode = require("qrcode");
 const { Server } = require("socket.io");
 
 const PORT = Number(process.env.PORT || 3000);
-const PUBLIC_URL = process.env.PUBLIC_URL || "https://apnee.fredlemerou.fr";
+const PUBLIC_URL = process.env.PUBLIC_URL || "https://localhost:3000";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Apnée";
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, "data");
 const DB_PATH = path.join(DATA_DIR, "apnee-live.sqlite");
