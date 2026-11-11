@@ -1,0 +1,17 @@
+{
+  "name": "apnee-live",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chronomètres d'apnée en direct pour conférences",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.8.1"
+  }
+}

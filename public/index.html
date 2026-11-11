@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#007f92">
+  <title>Apnée Live</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="participant-shell">
+    <section class="hero">
+      <div class="bubble bubble-one"></div>
+      <div class="bubble bubble-two"></div>
+      <p class="eyebrow">Expérience collective</p>
+      <h1>Apnée Live</h1>
+      <p class="subtitle">Observe l’évolution de tes quatre apnées.</p>
+    </section>
+
+    <section id="registrationCard" class="card registration-card">
+      <h2>Bienvenue</h2>
+      <p>Choisis le nom qui apparaîtra sur l’écran de la conférence.</p>
+
+      <form id="registrationForm">
+        <label for="participantName">Prénom ou pseudo</label>
+        <input
+          id="participantName"
+          name="participantName"
+          type="text"
+          maxlength="40"
+          autocomplete="nickname"
+          placeholder="Ex. Fred"
+          required
+        >
+        <button type="submit" class="primary-button">Participer</button>
+      </form>
+
+      <p id="registrationError" class="error-message" role="alert"></p>
+    </section>
+
+    <section id="timerArea" class="hidden">
+      <div class="identity-row">
+        <div>
+          <span class="small-label">Participant</span>
+          <strong id="displayName"></strong>
+        </div>
+        <button id="changeParticipantButton" class="text-button" type="button">
+          Changer
+        </button>
+      </div>
+
+      <aside id="safetyMessage" class="safety-banner"></aside>
+
+      <div id="timersGrid" class="timers-grid"></div>
+
+      <section class="card personal-summary">
+        <h2>Mes résultats</h2>
+        <div id="personalChart" class="mini-chart" aria-label="Graphique personnel"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

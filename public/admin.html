@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#007f92">
+  <title>Apnée Live — Animateur</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="admin-body">
+  <main class="admin-shell">
+    <section id="adminLogin" class="card admin-login-card">
+      <p class="eyebrow">Espace animateur</p>
+      <h1>Apnée Live</h1>
+      <form id="adminLoginForm">
+        <label for="adminPassword">Mot de passe</label>
+        <input
+          id="adminPassword"
+          type="password"
+          autocomplete="current-password"
+          required
+        >
+        <button class="primary-button" type="submit">Ouvrir le tableau de bord</button>
+      </form>
+      <p id="adminLoginError" class="error-message" role="alert"></p>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <header class="dashboard-header">
+        <div>
+          <p class="eyebrow">Tableau de bord animateur</p>
+          <h1>Apnée Live</h1>
+        </div>
+        <button id="resetButton" class="danger-button" type="button">
+          Remise à zéro
+        </button>
+      </header>
+
+      <section class="dashboard-top-grid">
+        <article class="card qr-card">
+          <h2>Rejoindre l’expérience</h2>
+          <img src="/api/qrcode" alt="QR code vers Apnée Live">
+          <p id="publicUrl" class="public-url"></p>
+        </article>
+
+        <article class="card count-card">
+          <span class="small-label">Participants inscrits</span>
+          <strong id="participantCount">0</strong>
+        </article>
+
+        <article class="card average-card">
+          <h2>Moyenne du groupe</h2>
+          <div id="averageChart" class="large-chart"></div>
+        </article>
+      </section>
+
+
+      <section class="card table-card">
+        <div class="section-heading-row">
+          <div>
+            <h2>Résultats</h2>
+            <p>Mise à jour en direct.</p>
+          </div>
+          <span id="lastUpdate" class="small-label"></span>
+        </div>
+
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Prénom ou pseudo</th>
+                <th>Apnée 1</th>
+                <th>Apnée 2</th>
+                <th>Apnée 3</th>
+                <th>Apnée 4</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/admin.js"></script>
+</body>
+</html>
