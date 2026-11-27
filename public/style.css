@@ -452,7 +452,7 @@ th {
 }
 
 #resultsBody > tr > td:not(.empty-state) {
-  padding-block: 11px;
+  padding-block: 7px;
 }
 
 .remove-participant {
