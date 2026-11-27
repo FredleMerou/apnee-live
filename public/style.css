@@ -451,6 +451,10 @@ th {
   text-transform: uppercase;
 }
 
+#resultsBody > tr > td:not(.empty-state) {
+  padding-block: 11px;
+}
+
 .remove-participant {
   min-width: 24px;
   min-height: 24px;
