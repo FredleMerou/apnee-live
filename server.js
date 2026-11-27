@@ -374,6 +374,17 @@ app.get("/api/admin/dashboard", requireAdmin, (req, res) => {
   res.json(buildDashboardPayload());
 });
 
+app.delete("/api/admin/participants/:id", requireAdmin, (req, res) => {
+  const result = db.prepare("DELETE FROM participants WHERE id = ?")
+    .run(req.params.id);
+
+  if (result.changes > 0) {
+    emitDashboard();
+  }
+
+  res.status(204).end();
+});
+
 app.post("/api/admin/reset", requireAdmin, (req, res) => {
   const transaction = db.transaction(() => {
     db.prepare("DELETE FROM timers").run();
