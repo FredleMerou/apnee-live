@@ -451,6 +451,29 @@ th {
   text-transform: uppercase;
 }
 
+.remove-participant {
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--danger);
+  font-size: 1rem;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.remove-participant:hover,
+.remove-participant:focus-visible {
+  background-color: rgba(197, 59, 75, .1);
+}
+
+.remove-participant:disabled {
+  cursor: wait;
+  opacity: .5;
+}
+
 .running-cell {
   color: var(--danger);
   font-weight: 900;
