@@ -18,6 +18,7 @@ let adminToken = sessionStorage.getItem(tokenKey) || "";
 let dashboardData = null;
 let socket = null;
 let clockLoop = null;
+const pendingDeletions = new Set();
 
 function formatDuration(ms) {
   const totalSeconds = Math.max(0, Math.floor(ms / 1000));
@@ -98,7 +99,7 @@ function renderChart(container, values) {
   }).join("");
 }
 
-function renderDashboard() {
+function renderDashboard(updateRows = true) {
   if (!dashboardData) return;
 
   const now = Date.now();
@@ -120,7 +121,16 @@ function renderDashboard() {
   renderChart(averageChart, averages);
 
 
-  if (!dashboardData.participants.length) {
+  if (!updateRows) {
+    dashboardData.participants.forEach((participant, rowIndex) => {
+      participant.timers.forEach((timer, timerIndex) => {
+        if (!timer.running) return;
+
+        resultsBody.rows[rowIndex].cells[timerIndex + 1].textContent =
+          `${formatDuration(effectiveElapsed(timer, now))} ●`;
+      });
+    });
+  } else if (!dashboardData.participants.length) {
     resultsBody.innerHTML = `
       <tr>
         <td colspan="5" class="empty-state">
@@ -137,9 +147,18 @@ function renderDashboard() {
         </td>
       `).join("");
 
+      const name = escapeHtml(participant.name) + duplicateSuffix(participant, index);
       return `
         <tr>
-          <td>${escapeHtml(participant.name)}${duplicateSuffix(participant, index)}</td>
+          <td>
+            <button type="button" class="remove-participant"
+              data-participant-id="${escapeHtml(participant.id)}"
+              data-participant-name="${name}"
+              aria-label="Supprimer ${name}"
+              title="Supprimer ${name}"
+              ${pendingDeletions.has(participant.id) ? "disabled" : ""}>×</button>
+            ${name}
+          </td>
           ${cells}
         </tr>
       `;
@@ -178,7 +197,7 @@ function showDashboard() {
   dashboard.classList.remove("hidden");
 
   if (!clockLoop) {
-    clockLoop = window.setInterval(renderDashboard, 500);
+    clockLoop = window.setInterval(() => renderDashboard(false), 500);
   }
 }
 
@@ -235,6 +254,43 @@ adminLoginForm.addEventListener("submit", async (event) => {
     await loadDashboard();
   } catch (error) {
     adminLoginError.textContent = error.message;
+  }
+});
+
+resultsBody.addEventListener("click", async (event) => {
+  const button = event.target.closest(".remove-participant");
+  if (!button) return;
+
+  const { participantId, participantName } = button.dataset;
+  if (pendingDeletions.has(participantId)) return;
+
+  const confirmed = window.confirm(
+    `Supprimer définitivement « ${participantName} » et tous ses chronos ?`
+  );
+  if (!confirmed) return;
+
+  pendingDeletions.add(participantId);
+  button.disabled = true;
+
+  try {
+    await api(`/api/admin/participants/${encodeURIComponent(participantId)}`, {
+      method: "DELETE"
+    });
+
+    if (dashboardData.participants.some((participant) => participant.id === participantId)) {
+      dashboardData.participants = dashboardData.participants.filter(
+        (participant) => participant.id !== participantId
+      );
+      renderDashboard();
+    }
+  } catch (error) {
+    alert(error.message);
+  } finally {
+    pendingDeletions.delete(participantId);
+    const currentButton = resultsBody.querySelector(
+      `[data-participant-id="${CSS.escape(participantId)}"]`
+    );
+    if (currentButton) currentButton.disabled = false;
   }
 });
 
